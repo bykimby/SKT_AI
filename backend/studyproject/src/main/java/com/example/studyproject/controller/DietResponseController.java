@@ -7,6 +7,7 @@ import com.example.studyproject.service.DietResponseService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/dietResponse")
@@ -41,6 +42,12 @@ public class DietResponseController {
     public List<DietResponseDto> getById(@PathVariable("userId") Long userId){
         List<DietResponseDto> dietResponseDtos=dietResponseService.getById(userId);
         return dietResponseDtos;
+    }
+
+    @GetMapping("/{xthLiked}")
+    public Optional<DietResponseDto> findXthMostLiked(@PathVariable("xthLiked") int xthLiked){
+        Optional<DietResponseDto> dietResponseDto=dietResponseService.findXthMostLiked(xthLiked);
+        return dietResponseDto;
     }
 
 }

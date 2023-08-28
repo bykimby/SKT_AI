@@ -6,9 +6,13 @@ import com.example.studyproject.entity.DietResponseDto;
 import com.example.studyproject.entity.DietResponseEntity;
 import com.example.studyproject.mapper.DietResponseMapper;
 import com.example.studyproject.repository.DietResponseRepository;
+import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.proxy.EntityNotFoundDelegate;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,5 +53,17 @@ public class DietResponseService {
                 .map(dietResponseEntity -> dietResponseMapper.toDto(dietResponseEntity))
                 .collect(Collectors.toList());
         return dietResponseDtos;
+    }
+    public Optional<DietResponseDto> findXthMostLiked(int x) {
+        Pageable pageable = PageRequest.of(0, x); // 시작 페이지와 페이지 크기
+        List<DietResponseEntity> dietResponseEntities = dietResponseRepository.findAllByOrderByLikesDesc(pageable);
+
+        if (dietResponseEntities.size() < x) {//오류 띄울수 있게 수정
+            return Optional.empty(); // x번째 항목이 없으면 Optional.empty() 반환
+        }
+
+        DietResponseEntity dietResponseEntity = dietResponseEntities.get(x - 1); // 0-based index이므로 x - 1
+        DietResponseDto dietResponseDto = dietResponseMapper.toDto(dietResponseEntity);
+        return Optional.ofNullable(dietResponseDto);
     }
 }

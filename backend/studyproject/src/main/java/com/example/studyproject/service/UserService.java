@@ -6,30 +6,38 @@ import com.example.studyproject.domain.UserDto;
 import com.example.studyproject.mapper.UserMapper;
 import com.example.studyproject.repository.UserRepository;
 import com.example.studyproject.util.JwtUtil;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Date;
+
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
-    private final UserMapper userMapper;
-
-    @Autowired
-    public UserService(UserRepository userRepository,
-                       BCryptPasswordEncoder passwordEncoder,
-                       JwtUtil jwtUtil,
-                       UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.userMapper=userMapper;
-        this.jwtUtil = jwtUtil;
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
+    public String generateAccessToken(UserEntity user) {
+        return Jwts.builder()
+                .setSubject(user.getUserName())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000)) // 15분
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
     }
 
+    public String generateRefreshToken(UserEntity user) {
+        return Jwts.builder()
+                .setSubject(user.getUserName())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24시간
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
 //    @Transactional//회원가입
 //    public UserDto registerUser(UserDto userDto) {
 //        if (userRepository.findByUsername(userDto.getUserName()).isPresent()) {
@@ -38,8 +46,8 @@ public class UserService {
 //
 //        UserEntity userEntity = userMapper.toEntity(userDto);
 //        userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
-//        //userEntity.setAccessToken(jwtUtil.generateAccessToken(userDto.getUsername()));
-//        //userEntity.setRefreshToken(jwtUtil.generateRefreshToken(userDto.getUsername()));
+//        userEntity.setAccessToken(jwtUtil.generateAccessToken(userDto.getUsername()));
+//        userEntity.setRefreshToken(jwtUtil.generateRefreshToken(userDto.getUsername()));
 //        UserDto returnDto=userMapper.toDto(userRepository.save(userEntity));
 //        return returnDto;
 //    }

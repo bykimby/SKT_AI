@@ -5,6 +5,8 @@ import com.example.studyproject.mapper.DietMapper;
 import com.example.studyproject.service.DietService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/diet")
 public class DietController {
@@ -23,5 +25,10 @@ public class DietController {
     @DeleteMapping("/{dietId}")
     public void deleteDiet(@PathVariable("dietId") Long dietId) {
         dietService.deleteDiet(dietId);
+    }
+    @GetMapping("/{userId}")
+    public Optional<DietDto> getById(@PathVariable("userId") Long userId){
+        Optional<DietDto> dietDto=dietService.getById(userId);
+        return dietDto;
     }
 }

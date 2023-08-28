@@ -23,6 +23,8 @@ public class DietChatService {
         return dietChatMapper.toDto(returnEntity);
     }
 
+
+
     public void deleteDietChat(Long dietChatId){
         dietChatRepository.deleteById(dietChatId);
     }
