@@ -1,7 +1,7 @@
 package com.example.studyproject.repository;
 
-import com.example.studyproject.domain.User;
-import com.example.studyproject.entity.UserEntity;
+import com.example.studyproject.domain.UserEntity;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
