@@ -5,7 +5,6 @@ import com.example.studyproject.domain.UserEntity;
 import com.example.studyproject.domain.UserDto;
 import com.example.studyproject.mapper.UserMapper;
 import com.example.studyproject.repository.UserRepository;
-import com.example.studyproject.util.JwtUtil;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +18,25 @@ import java.util.Date;
 
 @Service
 public class UserService {
-    @Value("${jwt.secret}")
-    private String SECRET_KEY;
-    public String generateAccessToken(UserEntity user) {
-        return Jwts.builder()
-                .setSubject(user.getUserName())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000)) // 15분
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
-    }
-
-    public String generateRefreshToken(UserEntity user) {
-        return Jwts.builder()
-                .setSubject(user.getUserName())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24시간
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
-    }
+//    @Value("${jwt.secret}")
+//    private String SECRET_KEY;
+//    public String generateAccessToken(UserEntity user) {
+//        return Jwts.builder()
+//                .setSubject(user.getUserName())
+//                .setIssuedAt(new Date())
+//                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000)) // 15분
+//                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+//                .compact();
+//    }
+//
+//    public String generateRefreshToken(UserEntity user) {
+//        return Jwts.builder()
+//                .setSubject(user.getUserName())
+//                .setIssuedAt(new Date())
+//                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24시간
+//                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+//                .compact();
+//    }
 //    @Transactional//회원가입
 //    public UserDto registerUser(UserDto userDto) {
 //        if (userRepository.findByUsername(userDto.getUserName()).isPresent()) {

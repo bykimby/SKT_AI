@@ -58,11 +58,11 @@ public class DietResponseService {
         Pageable pageable = PageRequest.of(0, x); // 시작 페이지와 페이지 크기
         List<DietResponseEntity> dietResponseEntities = dietResponseRepository.findAllByOrderByLikesDesc(pageable);
 
-        if (dietResponseEntities.size() < x) {//오류 띄울수 있게 수정
-            return Optional.empty(); // x번째 항목이 없으면 Optional.empty() 반환
+        if (dietResponseEntities.size() < x) {
+            return Optional.empty();
         }
 
-        DietResponseEntity dietResponseEntity = dietResponseEntities.get(x - 1); // 0-based index이므로 x - 1
+        DietResponseEntity dietResponseEntity = dietResponseEntities.get(x - 1);
         DietResponseDto dietResponseDto = dietResponseMapper.toDto(dietResponseEntity);
         return Optional.ofNullable(dietResponseDto);
     }

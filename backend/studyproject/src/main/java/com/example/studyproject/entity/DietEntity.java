@@ -14,7 +14,6 @@ import lombok.*;
 public class DietEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="dietId")
     private Long dietId;
     private float kcalToEat;
     private String availableIngredients;
@@ -24,5 +23,4 @@ public class DietEntity {
     @ManyToOne(fetch = FetchType.LAZY)//fetchtype을 eager로 하면 가능 그러면 getallposts를 dto로 해도 되는지? 직렬화의 문제가 있었음
     @JoinColumn(name="userId")
     private UserEntity user;//foriegn key
-    private Long userId=getUser().getUserid();
 }

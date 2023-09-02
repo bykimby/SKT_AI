@@ -21,5 +21,5 @@ public class DietChatEntity {
     @ManyToOne(fetch = FetchType.LAZY)//fetchtype을 eager로 하면 가능 그러면 getallposts를 dto로 해도 되는지? 직렬화의 문제가 있었음
     @JoinColumn(name="diet")
     private DietEntity diet;
-    private Long userId=diet.getUserId();
+
 }
